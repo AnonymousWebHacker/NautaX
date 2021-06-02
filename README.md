@@ -1,4 +1,4 @@
-# NautaX
+# NautaX v 1.0
 
 Monitoriar acceso a Internet y Nauta
 
