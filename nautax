@@ -1,76 +1,33 @@
 #!/bin/bash
 # VerNautaX (Verification Internet Connection) Comprueba su conexion a Internet
+# mail: anonymouswebhacker@protonmail.com
 #============================#
 #           VerNautaX        #
 #    By AnonmousWebHacker    #
 #----------------------------#
 #     VerNautaX.sh  v 1.1    #
 #============================#
+
 #Start script
 #check=http://www.google.com/humans.txt
-URL=8.8.8.8 # DNS Google
-let X=0
-let Y=0
-let Z=2
-let W=1
-let V=3
-let Q=4
-let time_bucle=5
+# Servidor para hacer la comprobación cuando se usa ICMP
+PING_CHECK_ADDRESS="8.8.8.8" # DNS Google
 
-#OtrasVariables
-sounds="/opt/nautax/sounds"
-icons="/opt/nautax/icons"
-
-msgonline="Conexion a Internet establecida"
-msgoffline="Conexion terminada"
-msgerror="Error de conexion"
-
-APP_TITLE="NautaX"
-#Estado
-CURR_STATUS=unknow
+###### Variables #####
+APP_TITLE="NautaX"   #Titulo
+CURR_STATUS=unknow   #Estado inicial desconocido
 
 # Tiempo de espera para comprobar el estado de la conexión. Si la conexión
 # es muy inestable prueba aumentando este valor.
 CHECK_TIMEOUT=10
 
-# Servidor para hacer la comprobación cuando se usa ICMP
-PING_CHECK_ADDRESS="8.8.8.8"
-
 # for internal use only
 export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
-
-#while true;
-#do sleep $time_bucle;
-#if sudo ping -w 2 $URL;
-#then
-#	if [ $X -eq $Y ]; then
-#		X=1
-#		notify-send INTERNET "$msgonline" -i $icons/conn_status_online.svg;
-#		aplay -N $sounds/online.wav >/dev/null 2>&1;
-#	elif [ $X -eq $W ]; then
-#		X=2
-#	elif [ $X -eq $V ]; then
-#		notify-send ERROR "$msgerror" -i $icons/conn_status_error.svg;
-#		aplay -N $sounds/error.wav >/dev/null 2>&1;
-#		X=1
-#	fi
-#else
-#	if [ $X -eq $Z ]; then
-#		X=4
-#	elif [ $X -eq $Q ]; then
-#		notify-send "INTERNET DOWN" "$msgoffline" -i $icons/conn_status_offline.svg -u critical;
-#		aplay -N $sounds/offline.wav >/dev/null 2>&1;
-#	elif [ $X -eq $V ]; then
-#		echo Verificando
-#	fi
-#fi
-#done
-###################################################################################
 function Verificar {
 	while true; do
 
-		#Si primera vez y estado descnocido
+		#Si primera vez y estado desconocido
 		if [ $CURR_STATUS = "unknow" ]; then
 			ping -c 1 -W $CHECK_TIMEOUT -n "${PING_CHECK_ADDRESS}" >/dev/null 2>&1;
 		else
