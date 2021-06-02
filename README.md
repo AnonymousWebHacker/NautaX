@@ -5,14 +5,15 @@ Monitoriar acceso a Internet y Nauta
 Cuando su sitema tenga acceso a internet, NautaX le enviara una notificacion de escritorio, asi como sonora.
 Ideal para redes SNETS con acceso a Nauta
 
-##Installacion
+## Installacion
 #### Dependencias
 * curl
 * notify-send
-####Generic
+#### Generic
 <pre>
 git clone https://github.com/AnonymousWebHacker/nautax
 cd nautax
+chmod +x nautax
 ./nautax
 </pre>
 
