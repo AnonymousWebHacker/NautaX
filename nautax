@@ -1,0 +1,125 @@
+#!/bin/bash
+# VerNautaX (Verification Internet Connection) Comprueba su conexion a Internet
+#============================#
+#           VerNautaX        #
+#    By AnonmousWebHacker    #
+#----------------------------#
+#     VerNautaX.sh  v 1.1    #
+#============================#
+#Start script
+#check=http://www.google.com/humans.txt
+URL=8.8.8.8 # DNS Google
+let X=0
+let Y=0
+let Z=2
+let W=1
+let V=3
+let Q=4
+let time_bucle=5
+
+#OtrasVariables
+sounds="/opt/nautax/sounds"
+icons="/opt/nautax/icons"
+
+msgonline="Conexion a Internet establecida"
+msgoffline="Conexion terminada"
+msgerror="Error de conexion"
+
+APP_TITLE="NautaX"
+#Estado
+CURR_STATUS=unknow
+
+# Tiempo de espera para comprobar el estado de la conexión. Si la conexión
+# es muy inestable prueba aumentando este valor.
+CHECK_TIMEOUT=10
+
+# Servidor para hacer la comprobación cuando se usa ICMP
+PING_CHECK_ADDRESS="8.8.8.8"
+
+# for internal use only
+export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+
+
+#while true;
+#do sleep $time_bucle;
+#if sudo ping -w 2 $URL;
+#then
+#	if [ $X -eq $Y ]; then
+#		X=1
+#		notify-send INTERNET "$msgonline" -i $icons/conn_status_online.svg;
+#		aplay -N $sounds/online.wav >/dev/null 2>&1;
+#	elif [ $X -eq $W ]; then
+#		X=2
+#	elif [ $X -eq $V ]; then
+#		notify-send ERROR "$msgerror" -i $icons/conn_status_error.svg;
+#		aplay -N $sounds/error.wav >/dev/null 2>&1;
+#		X=1
+#	fi
+#else
+#	if [ $X -eq $Z ]; then
+#		X=4
+#	elif [ $X -eq $Q ]; then
+#		notify-send "INTERNET DOWN" "$msgoffline" -i $icons/conn_status_offline.svg -u critical;
+#		aplay -N $sounds/offline.wav >/dev/null 2>&1;
+#	elif [ $X -eq $V ]; then
+#		echo Verificando
+#	fi
+#fi
+#done
+###################################################################################
+function Verificar {
+	while true; do
+
+		#Si primera vez y estado descnocido
+		if [ $CURR_STATUS = "unknow" ]; then
+			ping -c 1 -W $CHECK_TIMEOUT -n "${PING_CHECK_ADDRESS}" >/dev/null 2>&1;
+		else
+			#Agregar Peticion Curl para no sobrecargar trafico
+			ping -c 1 -W $CHECK_TIMEOUT -n "${PING_CHECK_ADDRESS}" >/dev/null 2>&1;
+		fi
+		case $? in
+			0) status "online";;
+			1) status "offline";;
+			*) status "error";;
+		esac
+		sleep 5s
+	done
+}
+
+# Establece el estado actual de la conexión sólo si es diferente
+# Params: $1 nuevo estado
+function status {
+	if [[ $1 != $CURR_STATUS ]]; then
+		CURR_STATUS=$1
+		Notification $CURR_STATUS
+	fi
+}
+
+function Notification {
+	if [[ $1 == 'online' ]]; then
+		local content="¡Conexion a Internet establecida!"
+		notify "$content" normal
+
+	elif [[ $1 == 'offline' ]]; then
+		local content="¡No estás conectado a Internet!"
+		notify "$content" normal
+
+	elif [[ $1 == 'error' ]]; then
+		local content="¡Ha ocurrido un error de red!\nPuede que tu adaptador de red se encuentre desconectado o hayas perdido la conexión con tu ISP"
+		notify "$content" low
+	fi
+}
+
+# Muestra una notificación con notify-send
+# Params: $1 content, $2 urgency
+function notify {
+	local icon="$SCRIPT_DIR/assets/conn_status_$CURR_STATUS.svg"
+	local soundfile="$SCRIPT_DIR/sounds/$CURR_STATUS.wav"
+	notify-send "${APP_TITLE}" "$1" -u "$2" --icon="$icon"
+	aplay -N $soundfile >/dev/null 2>&1
+	sleep $CHECK_TIMEOUT
+	Verificar
+}
+
+#Incio Script
+Verificar
