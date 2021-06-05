@@ -11,7 +11,7 @@ Ideal para redes SNETS con acceso a Nauta
 * notify-send (Notificaciones visuales)
 
 ##### Si su sistema es diferente de Ubuntu, considere instalar la dependendcia alsa-utils (no viene nativa)
-* alsa-utils  (Notificaciones sonoras cno utilidad aplay)
+* alsa-utils  (Notificaciones sonoras con utilidad aplay)
 #### Generic
 <pre>
 git clone https://github.com/AnonymousWebHacker/nautax
