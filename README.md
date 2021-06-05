@@ -8,7 +8,8 @@ Ideal para redes SNETS con acceso a Nauta
 ## Instalacion
 #### Dependencias
 * curl
-* notify-send
+* notify-send (Notificaciones visuales)
+* aplay  (Notificaciones sonoras)
 #### Generic
 <pre>
 git clone https://github.com/AnonymousWebHacker/nautax
