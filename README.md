@@ -1,6 +1,6 @@
 # NautaX v 1.0
 
-Monitoriar acceso a Internet y Nauta
+Monitorear acceso a Internet y Nauta
 
 Cuando su sistema tenga acceso a internet, NautaX le enviara una notificacion de escritorio, asi como sonora.
 Ideal para redes SNETS con acceso a Nauta
